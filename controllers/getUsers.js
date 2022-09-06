@@ -1,8 +1,8 @@
 const { selectUsers } = require("../models/selectUsers")
 
 exports.getUsers = (req, res) => {
-    selectUsers().then((response) => {
-        res.status(200).send(response);
+    selectUsers().then((users) => {
+        res.status(200).send({users});
     }).catch((err) => {
         console.log(err);
     });
