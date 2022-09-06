@@ -13,8 +13,8 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node listen.js"
+    "test": "NODE_ENV=test jest",
+    "start": "NODE_ENV=development node listen.js"
   },
   "repository": {
     "type": "git",
@@ -26,5 +26,9 @@
   "bugs": {
     "url": "https://github.com/RichardNeat/backend-be-present/issues"
   },
-  "homepage": "https://github.com/RichardNeat/backend-be-present#readme"
+  "homepage": "https://github.com/RichardNeat/backend-be-present#readme",
+  "devDependencies": {
+    "jest": "^29.0.2",
+    "supertest": "^6.2.4"
+  }
 }
