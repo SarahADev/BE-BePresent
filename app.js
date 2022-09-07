@@ -1,10 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const { getUsers } = require('./controllers/getUsers');
+const {postUsers} = require('./controllers/postUsers')
 
-// const { v4: uuidv4} = require('uuid');
-// const jwt = require('jsonwebtoken');
-// const bcrypt = require('bcrypt');
+
 
 const app = express();
 
@@ -16,5 +15,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/users', getUsers);
+
+app.post('/users', postUsers);
 
 module.exports = app;
