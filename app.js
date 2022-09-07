@@ -1,9 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const { getUsers } = require('./controllers/getUsers');
-const {postUsers} = require('./controllers/postUsers')
-
-
+const { postUsers } = require('./controllers/postUsers');
+const { getUserById } = require('./controllers/getUserById');
 
 const app = express();
 
@@ -17,5 +16,7 @@ app.get('/', (req, res) => {
 app.get('/users', getUsers);
 
 app.post('/users', postUsers);
+
+app.get('/users/:userId', getUserById);
 
 module.exports = app;

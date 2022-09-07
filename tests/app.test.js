@@ -18,6 +18,30 @@ describe("GET /users", () => {
         });
       });
   });
+
+  describe('GET /users/:userId', () => {
+    test('should return the requested user', () => {
+        const expected = {
+            "_id": "6318669c04419aa5230cacaf",
+            "user_id": "test1",
+            "first_name": "test",
+            "last_name": "test",
+            "email": "test@test.com",
+            "birth_day": "28",
+            "birth_month": "06",
+            "birth_year": "1991",
+            "hashed_password": "12345asdfg",
+            "interests": ["gaming", "board-games", "squash"],
+            "connections": ["test2"]
+        }
+        return request(app)
+            .get("/users/test1")
+            .expect(200)
+            .then(({body}) => {
+                expect(body.user).toEqual(expected);
+            });
+    });
+  });
   test("posts a user", () => {
     const input = {
       first_name: "Test",
