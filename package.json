@@ -14,7 +14,8 @@
   "main": "app.js",
   "scripts": {
     "test": "NODE_ENV=test jest",
-    "start": "NODE_ENV=development node listen.js"
+    "start": "NODE_ENV=development node listen.js",
+    "deploy": "/home/richardneat/.fly/bin/flyctl deploy"
   },
   "repository": {
     "type": "git",
