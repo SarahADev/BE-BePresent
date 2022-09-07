@@ -57,7 +57,8 @@ exports.insertUsers = async (newUser) => {
 
     await users.insertOne(formatUser);
     return formatUser;
-  } catch (err) {
-    console.log("error in signup model", err);
-  }
+    
+  } finally {
+    client.close();
+  };
 };

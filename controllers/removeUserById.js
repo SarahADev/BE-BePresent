@@ -6,8 +6,6 @@ exports.removeUserById= (req, res) => {
         res.sendStatus(204)
     })
     .catch((err) => {
-        console.log('controller catch block')
-        console.log(err.status, err.msg, 'err in controller')
         res.status(err.status).send({msg : err.msg})
     });
 }

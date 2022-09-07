@@ -3,23 +3,7 @@ const request = require("supertest");
 
 // afterall()
 
-describe("GET /users", () => {
-  test("should return all users", () => {
-    return request(app)
-      .get("/users")
-      .expect(200)
-      .then(({ body }) => {
-        // expect(body.users.length).toBe(5);
-        body.users.map((user) => {
-          expect(user._id).toEqual(expect.any(String));
-          expect(user.user_id).toEqual(expect.any(String));
-          expect(user.email).toEqual(expect.any(String));
-          expect(user.hashed_password).toEqual(expect.any(String));
-        });
-      });
-  });
-
-  describe('GET /users/:userId', () => {
+describe('GET /users/:userId', () => {
     test('should return the requested user', () => {
         const expected = {
             "_id": "6318669c04419aa5230cacaf",
@@ -41,7 +25,7 @@ describe("GET /users", () => {
                 expect(body.user).toEqual(expected);
             });
     });
-  });
+});
 
 describe("/users", () => {
   let createdUserId = ''
@@ -104,18 +88,21 @@ describe("/users", () => {
       expect(body.msg).toBe('User not found.')
     });
   });
-  test("should return all users", () => {
-    return request(app)
-      .get("/users")
-      .expect(200)
-      .then(({ body }) => {
-        expect(body.users.length).toBe(2);
-        body.users.map((user) => {
-          expect(user._id).toEqual(expect.any(String));
-          expect(user.user_id).toEqual(expect.any(String));
-          expect(user.email).toEqual(expect.any(String));
-          expect(user.hashed_password).toEqual(expect.any(String));
+});
+
+describe("GET /users", () => {
+    test("should return all users", () => {
+      return request(app)
+        .get("/users")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.users.length).toBe(2);
+          body.users.map((user) => {
+            expect(user._id).toEqual(expect.any(String));
+            expect(user.user_id).toEqual(expect.any(String));
+            expect(user.email).toEqual(expect.any(String));
+            expect(user.hashed_password).toEqual(expect.any(String));
+          });
         });
-      });
-  });
+    });
 });

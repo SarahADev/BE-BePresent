@@ -1,8 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const { getUsers } = require('./controllers/getUsers');
-const {postUsers} = require('./controllers/postUsers')
-const {removeUserById} = require('./controllers/removeUserById')
+const { removeUserById } = require('./controllers/removeUserById')
 const { postUsers } = require('./controllers/postUsers');
 const { getUserById } = require('./controllers/getUserById');
 
