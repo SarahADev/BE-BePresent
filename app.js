@@ -3,8 +3,8 @@ const cors = require('cors');
 const { getUsers } = require('./controllers/getUsers');
 const {postUsers} = require('./controllers/postUsers')
 const {removeUserById} = require('./controllers/removeUserById')
-
-
+const { postUsers } = require('./controllers/postUsers');
+const { getUserById } = require('./controllers/getUserById');
 
 const app = express();
 
@@ -20,5 +20,7 @@ app.get('/users', getUsers);
 app.post('/users', postUsers);
 
 app.delete('/users/:user_id', removeUserById)
+
+app.get('/users/:userId', getUserById);
 
 module.exports = app;
