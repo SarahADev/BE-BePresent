@@ -20,7 +20,7 @@ exports.deleteUserById = async ({ user_id }) => {
     const deletedUser = await users.deleteOne({ user_id: user_id });
     if (deletedUser.deletedCount === 0) {
       console.log("in the promise reject");
-      return Promise.reject({ status: 404, msg: "User not found." });
+      return await Promise.reject({ status: 404, msg: "User not found." });
     } else {
       return deletedUser;
     }
