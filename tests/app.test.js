@@ -3,6 +3,17 @@ const request = require("supertest");
 
 // afterall()
 
+describe('Bad path', () => {
+  test('error 404 for bad path', () => {
+    return request(app)
+      .get('/banana')
+      .expect(404)
+        .then(({body}) => {
+          expect(body.msg).toBe('bad path');
+        });
+  });
+});
+
 describe('GET /users/:userId', () => {
     test('should return the requested user', () => {
         const expected = {
@@ -25,7 +36,7 @@ describe('GET /users/:userId', () => {
                 expect(body.user).toEqual(expected);
             });
     });
-    test.only('404 for id not found', () => {
+    test('404 for id not found', () => {
       return request(app)
         .get("/users/banana")
         .expect(404)
