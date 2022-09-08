@@ -125,3 +125,46 @@ describe("GET /users", () => {
         });
     });
 });
+
+
+describe('POST /users/login', () => {
+  test('should return success if credentials match in database, returns user ID', () => {
+    const input = {
+      email: 'test3@test.com',
+      password: 'test3_password'
+    }
+    return request(app)
+    .post('/users/login')
+    .send(input)
+    .expect(201)
+    .then(({body}) => {
+      expect(body).toEqual({ user_id: 'e49f6e7c-03ce-41af-b26f-5f555cb31c25' })
+    })
+  });
+  test('should reject if password is incorrect', () => {
+    const input = {
+      email: 'test3@test.com',
+      password: 'wrong_password'
+    }
+    return request(app)
+    .post('/users/login')
+    .send(input)
+    .expect(400)
+    .then(({body}) => {
+      expect(body.msg).toBe("Invalid credentials")
+    })
+  });
+  test('should reject if email is incorrect', () => {
+    const input = {
+      email: 'wrong@test.com',
+      password: 'test3_password'
+    }
+    return request(app)
+    .post('/users/login')
+    .send(input)
+    .expect(400)
+    .then(({body}) => {
+      expect(body.msg).toBe("Invalid credentials")
+    })
+  });
+});

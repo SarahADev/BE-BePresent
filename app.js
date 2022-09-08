@@ -5,6 +5,7 @@ const { removeUserById } = require('./controllers/removeUserById')
 const { postUsers } = require('./controllers/postUsers');
 const { getUserById } = require('./controllers/getUserById');
 const { customErrors } = require('./error-handling');
+const { postLogin } = require('./controllers/postLogin');
 
 const app = express();
 
@@ -22,6 +23,8 @@ app.post('/users', postUsers);
 app.delete('/users/:user_id', removeUserById)
 
 app.get('/users/:userId', getUserById);
+
+app.post('/users/login', postLogin)
 
 // EHMFs
 
