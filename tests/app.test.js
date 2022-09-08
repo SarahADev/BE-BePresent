@@ -193,7 +193,7 @@ describe("PATCH /users/:userId", () => {
       user_id: "test2",
       first_name: "Ezio",
       last_name: "Auditore",
-      email: "testing@testing.com",
+      email: "ezio.auditore@creed.com",
       birth_day: "03",
       birth_month: "12",
       birth_year: "1981",
@@ -219,7 +219,7 @@ describe("PATCH /users/:userId", () => {
       user_id: "test2",
       first_name: "Ezio",
       last_name: "Auditore",
-      email: "testing@testing.com",
+      email: "ezio.auditore@creed.com",
       birth_day: "03",
       birth_month: "12",
       birth_year: "1981",
@@ -236,4 +236,42 @@ describe("PATCH /users/:userId", () => {
         expect(body.user).toEqual(expected);
       });
   });
+  test("should edit email", () => {
+    const input = {
+      email: "ezio.auditore@creed.com",
+    };
+    const expected = {
+      _id: "6318673904419aa5230cacb0",
+      user_id: "test2",
+      first_name: "Ezio",
+      last_name: "Auditore",
+      email: "ezio.auditore@creed.com",
+      birth_day: "03",
+      birth_month: "12",
+      birth_year: "1981",
+      hashed_password: "12345asdfg",
+      interests: ["gardening", "football", "art"],
+      connections: ["test1"],
+      profiles: [""],
+    };
+    return request(app)
+      .patch("/users/test2")
+      .send(input)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.user).toEqual(expected);
+      });
+  });
+  test('error 404 for userId not found', () => {
+    const input = {
+      email: "ezio.auditore@creed.com",
+    };
+    return request(app)
+      .patch("/users/banana")
+      .send(input)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("User not found.");
+      });
+  })
 });
