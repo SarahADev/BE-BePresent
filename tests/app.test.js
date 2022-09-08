@@ -197,8 +197,8 @@ describe("PATCH /users/:userId", () => {
       birth_day: "03",
       birth_month: "12",
       birth_year: "1981",
-      hashed_password: "12345asdfg",
-      interests: ["gardening", "football", "art"],
+      hashed_password: expect.any(String),
+      interests: ["gardening", "football", "art", "squash"],
       connections: ["test1"],
       profiles: [""],
     };
@@ -223,8 +223,8 @@ describe("PATCH /users/:userId", () => {
       birth_day: "03",
       birth_month: "12",
       birth_year: "1981",
-      hashed_password: "12345asdfg",
-      interests: ["gardening", "football", "art"],
+      hashed_password: expect.any(String),
+      interests: ["gardening", "football", "art", "squash"],
       connections: ["test1"],
       profiles: [""],
     };
@@ -249,8 +249,60 @@ describe("PATCH /users/:userId", () => {
       birth_day: "03",
       birth_month: "12",
       birth_year: "1981",
-      hashed_password: "12345asdfg",
-      interests: ["gardening", "football", "art"],
+      hashed_password: expect.any(String),
+      interests: ["gardening", "football", "art", "squash"],
+      connections: ["test1"],
+      profiles: [""],
+    };
+    return request(app)
+      .patch("/users/test2")
+      .send(input)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.user).toEqual(expected);
+      });
+  });
+  test("should edit preferences", () => {
+    const input = {
+      interests: ["gardening", "football", "art", "squash"],
+    };
+    const expected = {
+      _id: "6318673904419aa5230cacb0",
+      user_id: "test2",
+      first_name: "Ezio",
+      last_name: "Auditore",
+      email: "ezio.auditore@creed.com",
+      birth_day: "03",
+      birth_month: "12",
+      birth_year: "1981",
+      hashed_password: expect.any(String),
+      interests: ["gardening", "football", "art", "squash"],
+      connections: ["test1"],
+      profiles: [""],
+    };
+    return request(app)
+      .patch("/users/test2")
+      .send(input)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.user).toEqual(expected);
+      });
+  });
+  test("should edit password", () => {
+    const input = {
+      password: "banana",
+    };
+    const expected = {
+      _id: "6318673904419aa5230cacb0",
+      user_id: "test2",
+      first_name: "Ezio",
+      last_name: "Auditore",
+      email: "ezio.auditore@creed.com",
+      birth_day: "03",
+      birth_month: "12",
+      birth_year: "1981",
+      hashed_password: expect.any(String),
+      interests: ["gardening", "football", "art", "squash"],
       connections: ["test1"],
       profiles: [""],
     };
@@ -273,5 +325,70 @@ describe("PATCH /users/:userId", () => {
       .then(({ body }) => {
         expect(body.msg).toBe("User not found.");
       });
-  })
+  });
+});
+
+describe('PATCH /users/:userId/connections', () => {
+  test("should add connection", () => {
+    const input = {
+      connections: "test3@test.com"
+    };
+    const expected = {
+      _id: "6318673904419aa5230cacb0",
+      user_id: "test2",
+      first_name: "Ezio",
+      last_name: "Auditore",
+      email: "ezio.auditore@creed.com",
+      birth_day: "03",
+      birth_month: "12",
+      birth_year: "1981",
+      hashed_password: expect.any(String),
+      interests: ["gardening", "football", "art", "squash"],
+      connections: ["test1", "e49f6e7c-03ce-41af-b26f-5f555cb31c25"],
+      profiles: [""],
+    };
+    return request(app)
+      .patch("/users/test2/connections")
+      .send(input)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.user).toEqual(expected);
+      });
+  });
+  test("error 400 for already a connection", () => {
+    const input = {
+      connections: "test3@test.com"
+    };
+    return request(app)
+      .patch("/users/test2/connections")
+      .send(input)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("You are already connected to that user!");
+      });
+  });
+  test('error 404 for email not found', () => {
+    const input = {
+      connections: "bunchofrubbish@nonsense.com"
+    };
+    return request(app)
+    .patch("/users/test2/connections")
+      .send(input)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("User not found.");
+      });
+  });
+});
+
+describe('DELETE /users/:userId/connections', () => {
+  test('should remove the specified user from connections', () => {
+    const input = {
+      connection_id: "e49f6e7c-03ce-41af-b26f-5f555cb31c25"
+    };
+    return request(app)
+    .delete("/users/test2/connections")
+      .send(input)
+      .expect(204);
+  });
 });
