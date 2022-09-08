@@ -1,6 +1,7 @@
 const { MongoClient } = require("mongodb");
 require("dotenv").config();
 const uri = process.env.URI;
+const bcrypt = require("bcrypt");
 
 let data = "";
 if (process.env.NODE_ENV === "test") {
@@ -9,14 +10,16 @@ if (process.env.NODE_ENV === "test") {
   data = "app-data";
 } else {
   console.log("no database set");
-}
+};
 
-exports.updateUser = async ({ userId }, { first_name, last_name, email }) => {
+exports.updateUser = async ({ userId }, { first_name, last_name, email, interests, password }) => {
   const client = new MongoClient(uri);
   let toBeUpdated = "";
   first_name ? (toBeUpdated = { first_name: first_name }) : null;
   last_name ? (toBeUpdated = { last_name: last_name }) : null;
   email ? (toBeUpdated = { email }) : null;
+  interests ? (toBeUpdated = { interests }): null;
+  password ? (toBeUpdated = { hashed_password: await bcrypt.hash(password, 10) }): null;
 
   try {
     await client.connect();
@@ -29,9 +32,8 @@ exports.updateUser = async ({ userId }, { first_name, last_name, email }) => {
     );
 
     if (user.matchedCount === 0) {
-      console.log(user, "in reject")
       return await Promise.reject({ status: 404, msg: "User not found." });
-    }
+    };
 
     const updatedUser = await users.findOne({ user_id: userId });
 
@@ -39,5 +41,5 @@ exports.updateUser = async ({ userId }, { first_name, last_name, email }) => {
 
   } finally {
     await client.close();
-  }
+  };
 };

@@ -17,6 +17,7 @@ exports.selectUserById = async (id) => {
         await client.connect();
         const database = client.db(data);
         const users = database.collection('users');
+        
         const user = await users.findOne({user_id: id});
         if (!user) {
             return await Promise.reject({status: 404, msg: "user not found"});
