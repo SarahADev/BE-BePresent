@@ -25,6 +25,14 @@ describe('GET /users/:userId', () => {
                 expect(body.user).toEqual(expected);
             });
     });
+    test.only('404 for id not found', () => {
+      return request(app)
+        .get("/users/banana")
+        .expect(404)
+          .then(({body}) => {
+            expect(body.msg).toBe("user not found");
+          });
+    });
 });
 
 describe("/users", () => {

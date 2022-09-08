@@ -4,6 +4,7 @@ const { getUsers } = require('./controllers/getUsers');
 const { removeUserById } = require('./controllers/removeUserById')
 const { postUsers } = require('./controllers/postUsers');
 const { getUserById } = require('./controllers/getUserById');
+const { customErrors } = require('./error-handling');
 
 const app = express();
 
@@ -21,5 +22,13 @@ app.post('/users', postUsers);
 app.delete('/users/:user_id', removeUserById)
 
 app.get('/users/:userId', getUserById);
+
+// EHMFs
+
+app.use(customErrors);
+
+app.all('*', (req, res) => {
+    res.status(404).send({msg: 'bad path'})
+});
 
 module.exports = app;
