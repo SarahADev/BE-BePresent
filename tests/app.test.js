@@ -183,7 +183,7 @@ describe("POST /users/login", () => {
   });
 });
 
-describe.only("PATCH /users/:userId", () => {
+describe("PATCH /users/:userId", () => {
   test("should edit first name", () => {
     const input = {
       first_name: "Ezio",
