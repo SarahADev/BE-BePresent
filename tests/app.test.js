@@ -27,7 +27,8 @@ describe('GET /users/:userId', () => {
             "birth_year": "1991",
             "hashed_password": "12345asdfg",
             "interests": ["gaming", "board-games", "squash"],
-            "connections": ["test2"]
+            "connections": ["test2"],
+            "profiles": [""]
         }
         return request(app)
             .get("/users/test1")
@@ -46,7 +47,7 @@ describe('GET /users/:userId', () => {
     });
 });
 
-describe("/users", () => {
+describe("POST /users", () => {
   let createdUserId = ''
   test("posts a user", () => {
     const input = {
@@ -77,6 +78,7 @@ describe("/users", () => {
           hashed_password: expect.any(String),
           interests: ["gaming", "gardening", "cooking"],
           connections: [],
+          profiles: []
         });
       });
   });
@@ -115,12 +117,20 @@ describe("GET /users", () => {
         .get("/users")
         .expect(200)
         .then(({ body }) => {
-          expect(body.users.length).toBe(2);
+          expect(body.users.length).toBe(3);
           body.users.map((user) => {
             expect(user._id).toEqual(expect.any(String));
             expect(user.user_id).toEqual(expect.any(String));
+            expect(user.first_name).toEqual(expect.any(String));
+            expect(user.last_name).toEqual(expect.any(String));
             expect(user.email).toEqual(expect.any(String));
+            expect(user.birth_day).toEqual(expect.any(String));
+            expect(user.birth_month).toEqual(expect.any(String));
+            expect(user.birth_year).toEqual(expect.any(String));
             expect(user.hashed_password).toEqual(expect.any(String));
+            expect(user.interests).toEqual(expect.any(Array));
+            expect(user.connections).toEqual(expect.any(Array));
+            expect(user.profiles).toEqual(expect.any(Array));
           });
         });
     });

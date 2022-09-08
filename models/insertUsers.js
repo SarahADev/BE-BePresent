@@ -53,6 +53,7 @@ exports.insertUsers = async (newUser) => {
       hashed_password: hashedpassword,
       interests: interests,
       connections: [],
+      profiles: []
     };
 
     await users.insertOne(formatUser);
