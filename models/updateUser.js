@@ -11,11 +11,12 @@ if (process.env.NODE_ENV === "test") {
   console.log("no database set");
 }
 
-exports.updateUser = async ({ userId }, { first_name, last_name }) => {
+exports.updateUser = async ({ userId }, { first_name, last_name, email }) => {
   const client = new MongoClient(uri);
   let toBeUpdated = "";
   first_name ? (toBeUpdated = { first_name: first_name }) : null;
   last_name ? (toBeUpdated = { last_name: last_name }) : null;
+  email ? (toBeUpdated = { email }) : null;
 
   try {
     await client.connect();
@@ -26,14 +27,16 @@ exports.updateUser = async ({ userId }, { first_name, last_name }) => {
       { user_id: userId },
       { $set: toBeUpdated }
     );
+
+    if (user.matchedCount === 0) {
+      console.log(user, "in reject")
+      return await Promise.reject({ status: 404, msg: "User not found." });
+    }
+
     const updatedUser = await users.findOne({ user_id: userId });
 
-    // if (user.modifiedCount === 0) {
-    //   console.log("REJECT IN MODEL");
-    //   return await Promise.reject({ status: 404, msg: "User not found." });
-    // } else {
     return updatedUser;
-    // }
+
   } finally {
     await client.close();
   }
