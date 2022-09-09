@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === "test") {
   console.log("no database set");
 };
 
-exports.deleteUserConnection = async ({userId}, {connection_id}) => {
+exports.deleteUserProfiles = async ({userId}, {name}) => {
     const client = new MongoClient(uri);
 
     try {
@@ -21,16 +21,16 @@ exports.deleteUserConnection = async ({userId}, {connection_id}) => {
 
         const currUser = await users.findOne({user_id: userId});
 
-        const newConnectionsArr = await currUser.connections.filter((connection) => {
-        return connection !== connection_id;
+        const newProfilesArr = await currUser.profiles.filter((profile) => {
+        return profile.name !== name;
         });
 
         const user = await users.updateOne(
             { user_id: userId },
-            { $set: {connections: newConnectionsArr} }
+            { $set: {profiles: newProfilesArr} }
             );
 
     } finally {
-        await client.close();
-    };
+    await client.close();
 };
+}

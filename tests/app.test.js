@@ -28,13 +28,7 @@ describe("GET /users/:userId", () => {
       hashed_password: "12345asdfg",
       interests: ["gaming", "board-games", "squash"],
       connections: ["test2"],
-      profiles: [{
-        name: "Sarah Taylor",
-        birth_day: "05",
-        birth_month: "09",
-        birth_year: "1997",
-        interests: ["tv, gaming, coding"]
-      }]
+      profiles: []
     };
     return request(app)
       .get("/users/test1")
@@ -399,7 +393,7 @@ describe('DELETE /users/:userId/connections', () => {
   });
 });
 
-describe ('PATCH /users/:userId/profiles', () => {
+describe('PATCH /users/:userId/profiles', () => {
   test('should add profile', () => {
     const input = {
       name: "Sarah Taylor",
@@ -463,13 +457,13 @@ describe ('PATCH /users/:userId/profiles', () => {
 });
 
 describe('DELETE /users/test1/profiles', () => {
-  test.only('should delete a profile', () => {
+  test('should delete a profile', () => {
     const input = {
       name: "Sarah Taylor"
     };
     return request(app)
-      .patch('/users/test1/profiles')
+      .delete('/users/test1/profiles')
       .send(input)
       .expect(204)
   });
-})
+});

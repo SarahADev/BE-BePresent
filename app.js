@@ -10,6 +10,7 @@ const { patchUser } = require('./controllers/patchUser');
 const { patchUserConnections } = require('./controllers/patchUserConnections');
 const { removeUserConnection } = require('./controllers/removeUserConnection');
 const { patchUserProfiles } = require('./controllers/patchUserProfiles');
+const { removeUserProfiles } = require('./controllers/removeUserProfiles');
 
 const app = express();
 
@@ -21,23 +22,19 @@ app.get('/', (req, res) => {
 });
 
 app.get('/users', getUsers);
-
 app.post('/users', postUsers);
 
-app.delete('/users/:user_id', removeUserById);
-
 app.get('/users/:userId', getUserById);
+app.patch('/users/:userId', patchUser);
+app.delete('/users/:user_id', removeUserById);
 
 app.post('/users/login', postLogin);
 
-app.patch('/users/:userId', patchUser);
-
 app.patch('/users/:userId/connections', patchUserConnections);
-
 app.delete('/users/:userId/connections', removeUserConnection);
 
 app.patch('/users/:userId/profiles', patchUserProfiles);
-
+app.delete('/users/:userId/profiles', removeUserProfiles);
 
 // EHMFs
 
