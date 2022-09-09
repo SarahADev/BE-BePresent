@@ -30,10 +30,10 @@ exports.insertLogin = async ({ email, password }) => {
       user.hashed_password
     );
 
-    const userID = user.user_id;
+    const loggedUser = user
 
     if (user && correctPassword) {
-      return userID;
+      return loggedUser;
     } else {
       return await Promise.reject({ status: 400, msg: "Invalid credentials" });
     }
