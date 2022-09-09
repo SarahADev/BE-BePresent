@@ -9,6 +9,7 @@ const { postLogin } = require('./controllers/postLogin');
 const { patchUser } = require('./controllers/patchUser');
 const { patchUserConnections } = require('./controllers/patchUserConnections');
 const { removeUserConnection } = require('./controllers/removeUserConnection');
+const { patchUserProfiles } = require('./controllers/patchUserProfiles');
 
 const app = express();
 
@@ -34,6 +35,8 @@ app.patch('/users/:userId', patchUser);
 app.patch('/users/:userId/connections', patchUserConnections);
 
 app.delete('/users/:userId/connections', removeUserConnection);
+
+app.patch('/users/:userId/profiles', patchUserProfiles);
 
 
 // EHMFs
