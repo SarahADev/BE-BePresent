@@ -11,11 +11,11 @@ if (process.env.NODE_ENV === "test") {
   console.log("no database set");
 };
 
-let count = 0;
-
 exports.updateUserConnections = async ({userId}, {connections}) => {
-    const client = new MongoClient(uri);
-
+  const client = new MongoClient(uri);
+  
+  let count = 0;
+  
     try {
         await client.connect();
         const database = client.db(data);

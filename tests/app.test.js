@@ -120,7 +120,7 @@ describe("GET /users", () => {
       .get("/users")
       .expect(200)
       .then(({ body }) => {
-        expect(body.users.length).toBe(3);
+        expect(body.users.length).toBe(4);
         body.users.map((user) => {
           expect(user._id).toEqual(expect.any(String));
           expect(user.user_id).toEqual(expect.any(String));
@@ -314,6 +314,84 @@ describe("PATCH /users/:userId", () => {
         expect(body.user).toEqual(expected);
       });
   });
+  test("should edit birth_day", () => {
+    const input = {
+      birth_day: "01",
+    };
+    const expected = {
+      _id: "631b048c4a214f94791507eb",
+      user_id: "test4",
+      first_name: "James",
+      last_name: "Gandolfini",
+      email: "tony@sopranos.com",
+      birth_day: "01",
+      birth_month: "01",
+      birth_year: "1972",
+      hashed_password: "asdasdasdas123123132123",
+      interests: ["gardening", "food", "organisation"],
+      connections: ["test1"],
+      profiles: []
+    };
+    return request(app)
+      .patch("/users/test4")
+      .send(input)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.user).toEqual(expected);
+      });
+  });
+  test("should edit birth_day", () => {
+    const input = {
+      birth_month: "01",
+    };
+    const expected = {
+      _id: "631b048c4a214f94791507eb",
+      user_id: "test4",
+      first_name: "James",
+      last_name: "Gandolfini",
+      email: "tony@sopranos.com",
+      birth_day: "01",
+      birth_month: "01",
+      birth_year: "1972",
+      hashed_password: "asdasdasdas123123132123",
+      interests: ["gardening", "food", "organisation"],
+      connections: ["test1"],
+      profiles: []
+    };
+    return request(app)
+      .patch("/users/test4")
+      .send(input)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.user).toEqual(expected);
+      });
+  });
+  test("should edit birth_year", () => {
+    const input = {
+      birth_year: "1972",
+    };
+    const expected = {
+      _id: "631b048c4a214f94791507eb",
+      user_id: "test4",
+      first_name: "James",
+      last_name: "Gandolfini",
+      email: "tony@sopranos.com",
+      birth_day: "01",
+      birth_month: "01",
+      birth_year: "1972",
+      hashed_password: "asdasdasdas123123132123",
+      interests: ["gardening", "food", "organisation"],
+      connections: ["test1"],
+      profiles: []
+    };
+    return request(app)
+      .patch("/users/test4")
+      .send(input)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.user).toEqual(expected);
+      });
+  });
   test('error 404 for userId not found', () => {
     const input = {
       email: "ezio.auditore@creed.com",
@@ -355,6 +433,32 @@ describe('PATCH /users/:userId/connections', () => {
         expect(body.user).toEqual(expected);
       });
   });
+  test("should add a second connection", () => {
+    const input = {
+      connections: "tony@sopranos.com"
+    };
+    const expected = {
+      _id: "6318673904419aa5230cacb0",
+      user_id: "test2",
+      first_name: "Ezio",
+      last_name: "Auditore",
+      email: "ezio.auditore@creed.com",
+      birth_day: "03",
+      birth_month: "12",
+      birth_year: "1981",
+      hashed_password: expect.any(String),
+      interests: ["gardening", "football", "art", "squash"],
+      connections: ["test1", "e49f6e7c-03ce-41af-b26f-5f555cb31c25", "test4"],
+      profiles: [""],
+    };
+    return request(app)
+      .patch("/users/test2/connections")
+      .send(input)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.user).toEqual(expected);
+      });
+  });
   test("error 400 for already a connection", () => {
     const input = {
       connections: "test3@test.com"
@@ -385,6 +489,15 @@ describe('DELETE /users/:userId/connections', () => {
   test('should remove the specified user from connections', () => {
     const input = {
       connection_id: "e49f6e7c-03ce-41af-b26f-5f555cb31c25"
+    };
+    return request(app)
+    .delete("/users/test2/connections")
+      .send(input)
+      .expect(204);
+  });
+  test('should remove the second user from connections', () => {
+    const input = {
+      connection_id: "test4"
     };
     return request(app)
     .delete("/users/test2/connections")
@@ -467,3 +580,5 @@ describe('DELETE /users/test1/profiles', () => {
       .expect(204)
   });
 });
+
+

@@ -12,7 +12,7 @@ if (process.env.NODE_ENV === "test") {
   console.log("no database set");
 };
 
-exports.updateUser = async ({ userId }, { first_name, last_name, email, interests, password }) => {
+exports.updateUser = async ({ userId }, { first_name, last_name, email, interests, password, birth_day, birth_month, birth_year }) => {
   const client = new MongoClient(uri);
   let toBeUpdated = "";
   first_name ? (toBeUpdated = { first_name: first_name }) : null;
@@ -20,6 +20,9 @@ exports.updateUser = async ({ userId }, { first_name, last_name, email, interest
   email ? (toBeUpdated = { email }) : null;
   interests ? (toBeUpdated = { interests }): null;
   password ? (toBeUpdated = { hashed_password: await bcrypt.hash(password, 10) }): null;
+  birth_day ? (toBeUpdated = { birth_day }): null;
+  birth_month ? (toBeUpdated = { birth_month }): null;
+  birth_year ? (toBeUpdated = { birth_year }): null;
 
   try {
     await client.connect();

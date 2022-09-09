@@ -11,10 +11,10 @@ if (process.env.NODE_ENV === "test") {
   console.log("no database set");
 };
 
-let count = 0;
-
 exports.updateUserProfiles = async ({userId}, input) => {
     const client = new MongoClient(uri);
+    
+    let count = 0;
 
     try {
         await client.connect();
@@ -25,7 +25,7 @@ exports.updateUserProfiles = async ({userId}, input) => {
 
         if (!currUser) {
             return await Promise.reject({ status: 404, msg: "User not found." });
-          };
+        };
 
         const checker = await currUser.profiles.forEach((connection) => {
             if (connection.name == input.name) {
