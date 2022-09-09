@@ -12,7 +12,6 @@ if (process.env.NODE_ENV === "test") {
 };
 
 exports.deleteUserProfiles = async ({userId}, {name}) => {
-    console.log(userId, name);
     const client = new MongoClient(uri);
 
     try {
@@ -30,8 +29,6 @@ exports.deleteUserProfiles = async ({userId}, {name}) => {
             { user_id: userId },
             { $set: {profiles: newProfilesArr} }
             );
-
-            console.log(user)
 
     } finally {
     await client.close();
