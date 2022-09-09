@@ -28,7 +28,13 @@ describe("GET /users/:userId", () => {
       hashed_password: "12345asdfg",
       interests: ["gaming", "board-games", "squash"],
       connections: ["test2"],
-      profiles: [""],
+      profiles: [{
+        name: "Sarah Taylor",
+        birth_day: "05",
+        birth_month: "09",
+        birth_year: "1997",
+        interests: ["tv, gaming, coding"]
+      }]
     };
     return request(app)
       .get("/users/test1")
@@ -392,3 +398,78 @@ describe('DELETE /users/:userId/connections', () => {
       .expect(204);
   });
 });
+
+describe ('PATCH /users/:userId/profiles', () => {
+  test('should add profile', () => {
+    const input = {
+      name: "Sarah Taylor",
+      birth_day: "05",
+      birth_month: "09",
+      birth_year: "1997",
+      interests: ["tv, gaming, coding"]
+    };
+    const expected =  {
+    "_id": "6318669c04419aa5230cacaf",
+    "user_id": "test1",
+    "first_name": "test",
+    "last_name": "test",
+    "email": "test@test.com",
+    "birth_day": "28",
+    "birth_month": "06",
+    "birth_year": "1991",
+    "hashed_password": "12345asdfg",
+    "interests": ["gaming", "board-games", "squash"],
+    "connections": ["test2"],
+    "profiles": [{
+      name: "Sarah Taylor",
+      birth_day: "05",
+      birth_month: "09",
+      birth_year: "1997",
+      interests: ["tv, gaming, coding"]
+    }]
+  };
+    return request(app)
+      .patch('/users/test1/profiles')
+      .send(input)
+      .expect(200)
+        .then(({body}) => {
+          expect(body.user).toEqual(expected)
+        });
+  });
+  test('should return an error if a profile with that name already exists', () => {
+    const input = {
+      name: "Sarah Taylor",
+      birth_day: "05",
+      birth_month: "09",
+      birth_year: "1997",
+      interests: ["tv, gaming, coding"]
+    };
+    return request(app)
+      .patch('/users/test1/profiles')
+      .send(input)
+      .expect(400)
+        .then(({body}) => {
+          expect(body.msg).toEqual("A profile with that name already exists")
+        });
+  });
+  test('error 404 for userId not found', () => {
+    return request(app)
+      .patch('/users/banana/profiles')
+      .expect(404)
+        .then(({body}) => {
+          expect(body.msg).toBe('User not found.');
+        });
+  });
+});
+
+describe('DELETE /users/test1/profiles', () => {
+  test.only('should delete a profile', () => {
+    const input = {
+      name: "Sarah Taylor"
+    };
+    return request(app)
+      .patch('/users/test1/profiles')
+      .send(input)
+      .expect(204)
+  });
+})
