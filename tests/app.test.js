@@ -150,9 +150,9 @@ describe("POST /users/login", () => {
       .send(input)
       .expect(201)
       .then(({ body }) => {
-        expect(body).toEqual({
-          user_id: "e49f6e7c-03ce-41af-b26f-5f555cb31c25",
-        });
+        expect(body.user_id).toBe("e49f6e7c-03ce-41af-b26f-5f555cb31c25");
+        expect(body.first_name).toBe("Bob");
+        expect(body.last_name).toBe("Coder");
       });
   });
   test("should reject if password is incorrect", () => {
