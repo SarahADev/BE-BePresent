@@ -581,4 +581,16 @@ describe('DELETE /users/test1/profiles', () => {
   });
 });
 
+describe.only('GET /presents/:category', () => {
+  test('should return all presents for a particular category', () => {
+    return request(app)
+      .get('/presents/home-and-living')
+      .expect(200)
+        .then(({body}) => {
+          // console.log(body.presents, "in test")
+          // expect(body.presents)
+        });
+  });
+});
+
 
