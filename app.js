@@ -11,7 +11,6 @@ const { patchUserConnections } = require('./controllers/patchUserConnections');
 const { removeUserConnection } = require('./controllers/removeUserConnection');
 const { patchUserProfiles } = require('./controllers/patchUserProfiles');
 const { removeUserProfiles } = require('./controllers/removeUserProfiles');
-const { getPresents } = require('./controllers/getPresents');
 
 const app = express();
 
@@ -36,8 +35,6 @@ app.delete('/users/:userId/connections', removeUserConnection);
 
 app.patch('/users/:userId/profiles', patchUserProfiles);
 app.delete('/users/:userId/profiles', removeUserProfiles);
-
-app.get('/presents/:category', getPresents);
 
 // EHMFs
 

@@ -21,6 +21,21 @@ exports.deleteUserConnection = async ({userId}, {connection_id}) => {
 
         const currUser = await users.findOne({user_id: userId});
 
+        let count = 0;
+
+        currUser.connections.map((friend) => {
+          if (friend === connection_id) {
+            count++
+          };
+        });
+
+        if (!count) {
+          return await Promise.reject({
+            status: 404,
+            msg: "This user is not on your friends list"
+          });
+        };
+
         const newConnectionsArr = await currUser.connections.filter((connection) => {
         return connection !== connection_id;
         });

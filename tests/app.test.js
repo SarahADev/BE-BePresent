@@ -504,6 +504,18 @@ describe('DELETE /users/:userId/connections', () => {
       .send(input)
       .expect(204);
   });
+  test('should return 404 for friend not found', () => {
+    const input = {
+      connection_id: "banana"
+    };
+    return request(app)
+    .delete("/users/test2/connections")
+      .send(input)
+      .expect(404)
+        .then(({body}) => {
+          expect(body.msg).toBe("This user is not on your friends list");
+        });
+  });
 });
 
 describe('PATCH /users/:userId/profiles', () => {
@@ -578,18 +590,6 @@ describe('DELETE /users/test1/profiles', () => {
       .delete('/users/test1/profiles')
       .send(input)
       .expect(204)
-  });
-});
-
-describe.only('GET /presents/:category', () => {
-  test('should return all presents for a particular category', () => {
-    return request(app)
-      .get('/presents/home-and-living')
-      .expect(200)
-        .then(({body}) => {
-          // console.log(body.presents, "in test")
-          // expect(body.presents)
-        });
   });
 });
 
