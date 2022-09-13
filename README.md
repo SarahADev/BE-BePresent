@@ -4,13 +4,14 @@ https://be-present.fly.dev/
 
 ## Project Summary
 
-This backend has been built using express and connects to our MongoDB/Atlas database. It is designed as a waypoint for our frontend application to communicate with the database. The final result is an app called 'Be Present', a gifting/social platform where users receive gift recommendations for their friends based on preferences that they have set.
+It is designed as a waypoint for our frontend application to communicate with the database. The final result is an app called 'Be Present', a gifting/social platform where users receive gift recommendations for their friends based on preferences that they have set.
+
+This backend has been built using express and connects to our MongoDB/Atlas database. UUID is used to generate a user_id for a new user and bcrypt encrypts the users password in the database and compares the real password to the encrypted version.
 
 ## Install Dependencies
 
 By default, 'npm install' will install all modules listed as dependencies in package.json. In this case this will install: 
 
-    "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.2",
