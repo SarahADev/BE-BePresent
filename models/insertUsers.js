@@ -37,12 +37,12 @@ exports.insertUsers = async (newUser) => {
     const database = client.db(data);
     const users = database.collection("users");
 
+    email = email.toLowerCase();
+
     const existingUser = await users.findOne({ email });
     if (existingUser) {
       return Promise.reject({ status: 409, msg: "User email already exists" });
     }
-
-    email = email.toLowerCase();
 
     const formatUser = {
       user_id: generatedUserId,
