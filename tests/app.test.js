@@ -53,7 +53,7 @@ describe("POST /users", () => {
     const input = {
       first_name: "Test",
       last_name: "Six",
-      email: "test6@test.com",
+      email: "TEST6@test.com",
       birth_day: "06",
       birth_month: "06",
       birth_year: "1996",
