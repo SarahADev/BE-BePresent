@@ -1,7 +1,30 @@
 const app = require("../app.js");
 const request = require("supertest");
 
-// afterall()
+let newUserId = "";
+beforeEach(() => {
+    const input = {
+      first_name: "Test4",
+      last_name: "Four",
+      email: "test4@test.com",
+      birth_day: "04",
+      birth_month: "04",
+      birth_year: "2004",
+      password: "password4",
+      interests: ["home-and-living"],
+    };
+    return request(app)
+      .post("/users")
+      .send(input)
+      .expect(201)
+      .then(({ body }) => {
+        newUserId = body.user_id;
+      });
+});
+
+afterEach(() => {
+  return request(app).delete(`/users/${newUserId}`).expect(204)
+});
 
 describe("Bad path", () => {
   test("error 404 for bad path", () => {
@@ -17,17 +40,17 @@ describe("Bad path", () => {
 describe("GET /users/:userId", () => {
   test("should return the requested user", () => {
     const expected = {
-      _id: "6318669c04419aa5230cacaf",
-      user_id: "test1",
-      first_name: "test",
-      last_name: "test",
-      email: "test@test.com",
-      birth_day: "28",
-      birth_month: "06",
-      birth_year: "1991",
-      hashed_password: "12345asdfg",
-      interests: ["gaming", "board-games", "squash"],
-      connections: ["test2"],
+      _id: '6329a3f23b9627a690c8483c',
+      user_id: 'test1',
+      first_name: 'Test',
+      last_name: 'One',
+      email: 'test1@test.com',
+      birth_day: '01',
+      birth_month: '01',
+      birth_year: '2001',
+      hashed_password: 'password1',
+      interests: [ 'art-and-collectibles', 'toys-and-entertainment' ],
+      connections: [],
       profiles: []
     };
     return request(app)
@@ -51,14 +74,14 @@ describe("POST /users", () => {
   let createdUserId = "";
   test("posts a user", () => {
     const input = {
-      first_name: "Test",
-      last_name: "Six",
-      email: "TEST6@test.com",
-      birth_day: "06",
-      birth_month: "06",
-      birth_year: "1996",
-      password: "test6_password",
-      interests: ["gaming", "gardening", "cooking"],
+      first_name: "Test2",
+      last_name: "Two",
+      email: "test2@test.com",
+      birth_day: "02",
+      birth_month: "02",
+      birth_year: "2002",
+      password: "password2",
+      interests: ["jewelry-and-accessories", "art-and-collectibles"],
     };
     return request(app)
       .post("/users")
@@ -69,14 +92,14 @@ describe("POST /users", () => {
         expect(body).toEqual({
           _id: expect.any(String),
           user_id: expect.any(String),
-          first_name: "Test",
-          last_name: "Six",
-          email: "test6@test.com",
-          birth_day: "06",
-          birth_month: "06",
-          birth_year: "1996",
+          first_name: "Test2",
+          last_name: "Two",
+          email: "test2@test.com",
+          birth_day: "02",
+          birth_month: "02",
+          birth_year: "2002",
           hashed_password: expect.any(String),
-          interests: ["gaming", "gardening", "cooking"],
+          interests: ["jewelry-and-accessories", "art-and-collectibles"],
           connections: [],
           profiles: [],
         });
@@ -84,14 +107,14 @@ describe("POST /users", () => {
   });
   test("existing user returns an error", () => {
     const input = {
-      first_name: "Test",
-      last_name: "Six",
-      email: "TEST6@test.com",
-      birth_day: "06",
-      birth_month: "06",
-      birth_year: "1996",
-      password: "test6_password",
-      interests: ["gaming", "gardening", "cooking"],
+      first_name: "Test2",
+      last_name: "Two",
+      email: "test2@test.com",
+      birth_day: "02",
+      birth_month: "02",
+      birth_year: "2002",
+      password: "password2",
+      interests: ["jewelry-and-accessories", "art-and-collectibles"],
     };
     return request(app)
       .post("/users")
@@ -143,16 +166,16 @@ describe("POST /users/login", () => {
   test("should return success if credentials match in database, returns user ID", () => {
     const input = {
       email: "test3@test.com",
-      password: "test3_password",
+      password: "password3",
     };
     return request(app)
       .post("/users/login")
       .send(input)
       .expect(201)
       .then(({ body }) => {
-        expect(body.user_id).toBe("e49f6e7c-03ce-41af-b26f-5f555cb31c25");
-        expect(body.first_name).toBe("Bob");
-        expect(body.last_name).toBe("Coder");
+        expect(body.user_id).toBe("ed3b2ea5-adde-4ce9-b488-3bca618746ef");
+        expect(body.first_name).toBe("Test3");
+        expect(body.last_name).toBe("Three");
       });
   });
   test("should reject if password is incorrect", () => {
@@ -186,24 +209,24 @@ describe("POST /users/login", () => {
 describe("PATCH /users/:userId", () => {
   test("should edit first name", () => {
     const input = {
-      first_name: "Ezio",
+      first_name: "NewName",
     };
     const expected = {
-      _id: "6318673904419aa5230cacb0",
-      user_id: "test2",
-      first_name: "Ezio",
-      last_name: "Auditore",
-      email: "ezio.auditore@creed.com",
-      birth_day: "03",
-      birth_month: "12",
-      birth_year: "1981",
+      _id: expect.any(String),
+      user_id: expect.any(String),
+      first_name: "NewName",
+      last_name: "Four",
+      email: "test4@test.com",
+      birth_day: "04",
+      birth_month: "04",
+      birth_year: "2004",
       hashed_password: expect.any(String),
-      interests: ["gardening", "football", "art", "squash"],
-      connections: ["test1"],
-      profiles: [""],
+      interests: ["home-and-living"],
+      connections: [],
+      profiles: [],
     };
     return request(app)
-      .patch("/users/test2")
+      .patch(`/users/${newUserId}`)
       .send(input)
       .expect(200)
       .then(({ body }) => {
@@ -212,24 +235,24 @@ describe("PATCH /users/:userId", () => {
   });
   test("should edit last name", () => {
     const input = {
-      last_name: "Auditore",
+      last_name: "NewSurname",
     };
     const expected = {
-      _id: "6318673904419aa5230cacb0",
-      user_id: "test2",
-      first_name: "Ezio",
-      last_name: "Auditore",
-      email: "ezio.auditore@creed.com",
-      birth_day: "03",
-      birth_month: "12",
-      birth_year: "1981",
+      _id: expect.any(String),
+      user_id: expect.any(String),
+      first_name: "Test4",
+      last_name: "NewSurname",
+      email: "test4@test.com",
+      birth_day: "04",
+      birth_month: "04",
+      birth_year: "2004",
       hashed_password: expect.any(String),
-      interests: ["gardening", "football", "art", "squash"],
-      connections: ["test1"],
-      profiles: [""],
+      interests: ["home-and-living"],
+      connections: [],
+      profiles: [],
     };
     return request(app)
-      .patch("/users/test2")
+      .patch(`/users/${newUserId}`)
       .send(input)
       .expect(200)
       .then(({ body }) => {
@@ -238,24 +261,24 @@ describe("PATCH /users/:userId", () => {
   });
   test("should edit email", () => {
     const input = {
-      email: "ezio.auditore@creed.com",
+      email: "newEmail@test.com",
     };
     const expected = {
-      _id: "6318673904419aa5230cacb0",
-      user_id: "test2",
-      first_name: "Ezio",
-      last_name: "Auditore",
-      email: "ezio.auditore@creed.com",
-      birth_day: "03",
-      birth_month: "12",
-      birth_year: "1981",
+      _id: expect.any(String),
+      user_id: expect.any(String),
+      first_name: "Test4",
+      last_name: "Four",
+      email: "newEmail@test.com",
+      birth_day: "04",
+      birth_month: "04",
+      birth_year: "2004",
       hashed_password: expect.any(String),
-      interests: ["gardening", "football", "art", "squash"],
-      connections: ["test1"],
-      profiles: [""],
+      interests: ["home-and-living"],
+      connections: [],
+      profiles: [],
     };
     return request(app)
-      .patch("/users/test2")
+      .patch(`/users/${newUserId}`)
       .send(input)
       .expect(200)
       .then(({ body }) => {
@@ -264,24 +287,24 @@ describe("PATCH /users/:userId", () => {
   });
   test("should edit preferences", () => {
     const input = {
-      interests: ["gardening", "football", "art", "squash"],
+      interests: ["art-and-collectibles"],
     };
     const expected = {
-      _id: "6318673904419aa5230cacb0",
-      user_id: "test2",
-      first_name: "Ezio",
-      last_name: "Auditore",
-      email: "ezio.auditore@creed.com",
-      birth_day: "03",
-      birth_month: "12",
-      birth_year: "1981",
+      _id: expect.any(String),
+      user_id: expect.any(String),
+      first_name: "Test4",
+      last_name: "Four",
+      email: "test4@test.com",
+      birth_day: "04",
+      birth_month: "04",
+      birth_year: "2004",
       hashed_password: expect.any(String),
-      interests: ["gardening", "football", "art", "squash"],
-      connections: ["test1"],
-      profiles: [""],
+      interests: ["art-and-collectibles"],
+      connections: [],
+      profiles: [],
     };
     return request(app)
-      .patch("/users/test2")
+      .patch(`/users/${newUserId}`)
       .send(input)
       .expect(200)
       .then(({ body }) => {
@@ -290,24 +313,24 @@ describe("PATCH /users/:userId", () => {
   });
   test("should edit password", () => {
     const input = {
-      password: "banana",
+      password: "newPassword",
     };
     const expected = {
-      _id: "6318673904419aa5230cacb0",
-      user_id: "test2",
-      first_name: "Ezio",
-      last_name: "Auditore",
-      email: "ezio.auditore@creed.com",
-      birth_day: "03",
-      birth_month: "12",
-      birth_year: "1981",
+      _id: expect.any(String),
+      user_id: expect.any(String),
+      first_name: "Test4",
+      last_name: "Four",
+      email: "test4@test.com",
+      birth_day: "04",
+      birth_month: "04",
+      birth_year: "2004",
       hashed_password: expect.any(String),
-      interests: ["gardening", "football", "art", "squash"],
-      connections: ["test1"],
-      profiles: [""],
+      interests: ["home-and-living"],
+      connections: [],
+      profiles: [],
     };
     return request(app)
-      .patch("/users/test2")
+      .patch(`/users/${newUserId}`)
       .send(input)
       .expect(200)
       .then(({ body }) => {
@@ -316,24 +339,24 @@ describe("PATCH /users/:userId", () => {
   });
   test("should edit birth_day", () => {
     const input = {
-      birth_day: "01",
+      birth_day: "05",
     };
     const expected = {
-      _id: "631b048c4a214f94791507eb",
-      user_id: "test4",
-      first_name: "James",
-      last_name: "Gandolfini",
-      email: "tony@sopranos.com",
-      birth_day: "01",
-      birth_month: "01",
-      birth_year: "1972",
-      hashed_password: "asdasdasdas123123132123",
-      interests: ["gardening", "food", "organisation"],
-      connections: ["test1"],
-      profiles: []
+      _id: expect.any(String),
+      user_id: expect.any(String),
+      first_name: "Test4",
+      last_name: "Four",
+      email: "test4@test.com",
+      birth_day: "05",
+      birth_month: "04",
+      birth_year: "2004",
+      hashed_password: expect.any(String),
+      interests: ["home-and-living"],
+      connections: [],
+      profiles: [],
     };
     return request(app)
-      .patch("/users/test4")
+      .patch(`/users/${newUserId}`)
       .send(input)
       .expect(200)
       .then(({ body }) => {
@@ -342,24 +365,24 @@ describe("PATCH /users/:userId", () => {
   });
   test("should edit birth_day", () => {
     const input = {
-      birth_month: "01",
+      birth_month: "05",
     };
     const expected = {
-      _id: "631b048c4a214f94791507eb",
-      user_id: "test4",
-      first_name: "James",
-      last_name: "Gandolfini",
-      email: "tony@sopranos.com",
-      birth_day: "01",
-      birth_month: "01",
-      birth_year: "1972",
-      hashed_password: "asdasdasdas123123132123",
-      interests: ["gardening", "food", "organisation"],
-      connections: ["test1"],
-      profiles: []
+      _id: expect.any(String),
+      user_id: expect.any(String),
+      first_name: "Test4",
+      last_name: "Four",
+      email: "test4@test.com",
+      birth_day: "04",
+      birth_month: "05",
+      birth_year: "2004",
+      hashed_password: expect.any(String),
+      interests: ["home-and-living"],
+      connections: [],
+      profiles: [],
     };
     return request(app)
-      .patch("/users/test4")
+      .patch(`/users/${newUserId}`)
       .send(input)
       .expect(200)
       .then(({ body }) => {
@@ -368,24 +391,24 @@ describe("PATCH /users/:userId", () => {
   });
   test("should edit birth_year", () => {
     const input = {
-      birth_year: "1972",
+      birth_year: "1994",
     };
     const expected = {
-      _id: "631b048c4a214f94791507eb",
-      user_id: "test4",
-      first_name: "James",
-      last_name: "Gandolfini",
-      email: "tony@sopranos.com",
-      birth_day: "01",
-      birth_month: "01",
-      birth_year: "1972",
-      hashed_password: "asdasdasdas123123132123",
-      interests: ["gardening", "food", "organisation"],
-      connections: ["test1"],
-      profiles: []
-    };
+      _id: expect.any(String),
+      user_id: expect.any(String),
+      first_name: "Test4",
+      last_name: "Four",
+      email: "test4@test.com",
+      birth_day: "04",
+      birth_month: "04",
+      birth_year: "1994",
+      hashed_password: expect.any(String),
+      interests: ["home-and-living"],
+      connections: [],
+      profiles: [],
+    }
     return request(app)
-      .patch("/users/test4")
+      .patch(`/users/${newUserId}`)
       .send(input)
       .expect(200)
       .then(({ body }) => {
@@ -409,62 +432,37 @@ describe("PATCH /users/:userId", () => {
 describe('PATCH /users/:userId/connections', () => {
   test("should add connection", () => {
     const input = {
-      connections: "test3@test.com"
+      connections: "test1@test.com"
     };
     const expected = {
-      _id: "6318673904419aa5230cacb0",
-      user_id: "test2",
-      first_name: "Ezio",
-      last_name: "Auditore",
-      email: "ezio.auditore@creed.com",
-      birth_day: "03",
-      birth_month: "12",
-      birth_year: "1981",
-      hashed_password: expect.any(String),
-      interests: ["gardening", "football", "art", "squash"],
-      connections: ["test1", "e49f6e7c-03ce-41af-b26f-5f555cb31c25"],
-      profiles: [""],
+      _id: expect.any(String),
+      user_id: '5a65af09-3003-45a5-a6a4-0f97a2fbc231',
+      first_name: 'Test5',
+      last_name: 'Five',
+      email: 'test5@test.com',
+      birth_day: '05',
+      birth_month: '05',
+      birth_year: '2005',
+      hashed_password: '$2b$10$qLtwRuGbBI9Dx75vARNFee9m.dEo5nq2wOaiK0clirOz6FLA2BbyO',
+      interests: [ 'home-and-living' ],
+      connections: ["test1"],
+      profiles: [],
     };
     return request(app)
-      .patch("/users/test2/connections")
+      .patch(`/users/5a65af09-3003-45a5-a6a4-0f97a2fbc231/connections`)
       .send(input)
       .expect(200)
       .then(({ body }) => {
-        expect(body.user).toEqual(expected);
-      });
-  });
-  test("should add a second connection", () => {
-    const input = {
-      connections: "tony@sopranos.com"
-    };
-    const expected = {
-      _id: "6318673904419aa5230cacb0",
-      user_id: "test2",
-      first_name: "Ezio",
-      last_name: "Auditore",
-      email: "ezio.auditore@creed.com",
-      birth_day: "03",
-      birth_month: "12",
-      birth_year: "1981",
-      hashed_password: expect.any(String),
-      interests: ["gardening", "football", "art", "squash"],
-      connections: ["test1", "e49f6e7c-03ce-41af-b26f-5f555cb31c25", "test4"],
-      profiles: [""],
-    };
-    return request(app)
-      .patch("/users/test2/connections")
-      .send(input)
-      .expect(200)
-      .then(({ body }) => {
+        console.log(body.user)
         expect(body.user).toEqual(expected);
       });
   });
   test("error 400 for already a connection", () => {
     const input = {
-      connections: "test3@test.com"
+      connections: "test1@test.com"
     };
     return request(app)
-      .patch("/users/test2/connections")
+      .patch(`/users/5a65af09-3003-45a5-a6a4-0f97a2fbc231/connections`)
       .send(input)
       .expect(400)
       .then(({ body }) => {
@@ -476,7 +474,7 @@ describe('PATCH /users/:userId/connections', () => {
       connections: "bunchofrubbish@nonsense.com"
     };
     return request(app)
-    .patch("/users/test2/connections")
+    .patch(`/users/5a65af09-3003-45a5-a6a4-0f97a2fbc231/connections`)
       .send(input)
       .expect(404)
       .then(({ body }) => {
@@ -488,19 +486,10 @@ describe('PATCH /users/:userId/connections', () => {
 describe('DELETE /users/:userId/connections', () => {
   test('should remove the specified user from connections', () => {
     const input = {
-      connection_id: "e49f6e7c-03ce-41af-b26f-5f555cb31c25"
+      connection_id: "test1"
     };
     return request(app)
-    .delete("/users/test2/connections")
-      .send(input)
-      .expect(204);
-  });
-  test('should remove the second user from connections', () => {
-    const input = {
-      connection_id: "test4"
-    };
-    return request(app)
-    .delete("/users/test2/connections")
+    .delete("/users/5a65af09-3003-45a5-a6a4-0f97a2fbc231/connections")
       .send(input)
       .expect(204);
   });
@@ -509,7 +498,7 @@ describe('DELETE /users/:userId/connections', () => {
       connection_id: "banana"
     };
     return request(app)
-    .delete("/users/test2/connections")
+    .delete("/users/5a65af09-3003-45a5-a6a4-0f97a2fbc231/connections")
       .send(input)
       .expect(404)
         .then(({body}) => {
@@ -521,34 +510,34 @@ describe('DELETE /users/:userId/connections', () => {
 describe('PATCH /users/:userId/profiles', () => {
   test('should add profile', () => {
     const input = {
-      name: "Sarah Taylor",
-      birth_day: "05",
-      birth_month: "09",
+      name: "Example Profile",
+      birth_day: "07",
+      birth_month: "07",
       birth_year: "1997",
-      interests: ["tv, gaming, coding"]
+      interests: ["toys-and-entertainment", "art-and-collectibles"]
     };
     const expected =  {
-    "_id": "6318669c04419aa5230cacaf",
-    "user_id": "test1",
-    "first_name": "test",
-    "last_name": "test",
-    "email": "test@test.com",
-    "birth_day": "28",
-    "birth_month": "06",
-    "birth_year": "1991",
-    "hashed_password": "12345asdfg",
-    "interests": ["gaming", "board-games", "squash"],
-    "connections": ["test2"],
-    "profiles": [{
-      name: "Sarah Taylor",
-      birth_day: "05",
-      birth_month: "09",
-      birth_year: "1997",
-      interests: ["tv, gaming, coding"]
-    }]
+      _id: expect.any(String),
+      user_id: `ed3b2ea5-adde-4ce9-b488-3bca618746ef`,
+      first_name: "Test3",
+      last_name: "Three",
+      email: "test3@test.com",
+      birth_day: "03",
+      birth_month: "03",
+      birth_year: "2003",
+      hashed_password: expect.any(String),
+      interests: ["jewelry-and-accessories", "home-and-living"],
+      connections: [],
+      profiles: [{
+        name: "Example Profile",
+        birth_day: "07",
+        birth_month: "07",
+        birth_year: "1997",
+        interests: ["toys-and-entertainment", "art-and-collectibles"]
+      }],
   };
     return request(app)
-      .patch('/users/test1/profiles')
+      .patch(`/users/ed3b2ea5-adde-4ce9-b488-3bca618746ef/profiles`)
       .send(input)
       .expect(200)
         .then(({body}) => {
@@ -557,14 +546,14 @@ describe('PATCH /users/:userId/profiles', () => {
   });
   test('should return an error if a profile with that name already exists', () => {
     const input = {
-      name: "Sarah Taylor",
-      birth_day: "05",
-      birth_month: "09",
+      name: "Example Profile",
+      birth_day: "07",
+      birth_month: "07",
       birth_year: "1997",
-      interests: ["tv, gaming, coding"]
+      interests: ["toys-and-entertainment", "art-and-collectibles"]
     };
     return request(app)
-      .patch('/users/test1/profiles')
+      .patch(`/users/ed3b2ea5-adde-4ce9-b488-3bca618746ef/profiles`)
       .send(input)
       .expect(400)
         .then(({body}) => {
@@ -581,13 +570,13 @@ describe('PATCH /users/:userId/profiles', () => {
   });
 });
 
-describe('DELETE /users/test1/profiles', () => {
+describe('DELETE /users/:userId/profiles', () => {
   test('should delete a profile', () => {
     const input = {
-      name: "Sarah Taylor"
+      name: "Example Profile"
     };
     return request(app)
-      .delete('/users/test1/profiles')
+      .delete(`/users/ed3b2ea5-adde-4ce9-b488-3bca618746ef/profiles`)
       .send(input)
       .expect(204)
   });
