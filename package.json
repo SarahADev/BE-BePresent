@@ -20,15 +20,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RichardNeat/backend-be-present.git"
+    "url": "git+https://github.com/SarahADev/BE_BePresent.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/RichardNeat/backend-be-present/issues"
+    "url": "https://github.com/SarahADev/BE_BePresent/issues"
   },
-  "homepage": "https://github.com/RichardNeat/backend-be-present#readme",
+  "homepage": "https://github.com/SarahADev/BE-BePresent#readme",
   "devDependencies": {
     "jest": "^29.0.2",
     "supertest": "^6.2.4"
