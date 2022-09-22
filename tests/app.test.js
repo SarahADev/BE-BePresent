@@ -2,29 +2,29 @@ const app = require("../app.js");
 const request = require("supertest");
 
 let newUserId = "";
-beforeEach(() => {
-    const input = {
-      first_name: "Test4",
-      last_name: "Four",
-      email: "test4@test.com",
-      birth_day: "04",
-      birth_month: "04",
-      birth_year: "2004",
-      password: "password4",
-      interests: ["home-and-living"],
-    };
-    return request(app)
-      .post("/users")
-      .send(input)
-      .expect(201)
-      .then(({ body }) => {
-        newUserId = body.user_id;
-      });
-});
+// beforeEach(() => {
+//     const input = {
+//       first_name: "Test4",
+//       last_name: "Four",
+//       email: "test4@test.com",
+//       birth_day: "04",
+//       birth_month: "04",
+//       birth_year: "2004",
+//       password: "password4",
+//       interests: ["home-and-living"],
+//     };
+//     return request(app)
+//       .post("/users")
+//       .send(input)
+//       .expect(201)
+//       .then(({ body }) => {
+//         newUserId = body.user_id;
+//       });
+// });
 
-afterEach(() => {
-  return request(app).delete(`/users/${newUserId}`).expect(204)
-});
+// afterEach(() => {
+//   return request(app).delete(`/users/${newUserId}`).expect(204)
+// });
 
 describe("Bad path", () => {
   test("error 404 for bad path", () => {
@@ -582,4 +582,24 @@ describe('DELETE /users/:userId/profiles', () => {
   });
 });
 
+describe.only('POST /users/products', () => {
+  test("should get products", () => {
+    const input = {
+      categories: ['home-and-living'] 
+    };
+    return request(app)
+      .post("/users/products")
+      .send(input)
+      .expect(200)
+      .then(({ body }) => {
+        body.map((product) => {
+          expect(product.hasOwnProperty('itemName')).toBe(true)
+          expect(product.hasOwnProperty('itemLink')).toBe(true)
+          expect(product.hasOwnProperty('itemImage')).toBe(true)
+          expect(product.hasOwnProperty('itemPrice')).toBe(true)
+          expect(product.hasOwnProperty('category')).toBe(true)
+        })
+      });
+  }, 40000);
+})
 
