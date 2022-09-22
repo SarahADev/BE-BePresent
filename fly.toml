@@ -1,6 +1,6 @@
-# fly.toml file generated for be-present on 2022-09-06T19:02:06+01:00
+# fly.toml file generated for bepresent on 2022-09-22T14:07:12+01:00
 
-app = "be-present"
+app = "bepresent"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
