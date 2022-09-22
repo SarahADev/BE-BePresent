@@ -1,12 +1,38 @@
-## Hosted Version Link
+## Live Site
 
-https://be-present.fly.dev/
+https://bepresent.fly.dev/
 
 ## Project Summary
+![alt tag](./img-2.png)
 
-It is designed as a waypoint for our frontend application to communicate with the database. The final result is an app called 'Be Present', a gifting/social platform where users receive gift recommendations for their friends based on preferences that they have set.
+Backend for BePresent- a social gift recommendation app.
+Users can add and delete other users, and get recommendations from Etsy based on their interests.
+This backend includes a webscraper, which utilises the npm package cheerio.
 
-This backend has been built using express and connects to our MongoDB/Atlas database. UUID is used to generate a user_id for a new user and bcrypt encrypts the users password in the database and compares the real password to the encrypted version.
+Users db is built on MongoDB Atlas and hosted with fly.io, passwords are hashed using bcrypt and user ID's are provided with uuidv4.  
+Built in Node.JS with Express.
+
+## How It's Made:
+
+
+**Tech used:** Javascript, Node.js, Express, MongoDB Atlas
+Our webscraper takes categories input by the user on the front end, mapping through each category to scrape products from Etsy using the npm package Cheerio to parse the html. The full product list is then returned to the front end, which randomises the items rendered on the page. 
+Users db is built with MongoDB Atlas and hosted with fly.io, where hashed passwords are input using bcrypt and user ID's are provided with uuidv4.
+
+Full TDD was implemented in this backend, following the MVC model.
+
+## Lessons Learned:
+
+A variety of new concepts were explored in the development of this app:
+
+Hashing passwords for safe storage of credentials on a hosted database.
+Connecting to the MongoDB client and hosting with fly.io
+Webscraping- How to navigate and retrieve data from public sites with by parsing html.
+
+## Improvements:
+
+If more time was spent on this project, I would like to include authentication with JSONWebtoken or otherwise.
+If the app were to scale, it would be more appropriate to store webscraped products on a database so that a new request is not made each time. This would include request throttling, and also provide a backup should a scrape be unsuccessful. 
 
 ## Install Dependencies
 
